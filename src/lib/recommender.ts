@@ -25,14 +25,28 @@ export interface Recommendation {
 export const ratings: Rating[] = [
   { user_id: 1, book_id: 101, rating: 5 },
   { user_id: 1, book_id: 102, rating: 4 },
+  { user_id: 1, book_id: 106, rating: 5 },
   { user_id: 2, book_id: 101, rating: 4 },
   { user_id: 2, book_id: 103, rating: 5 },
+  { user_id: 2, book_id: 107, rating: 4 },
   { user_id: 3, book_id: 102, rating: 5 },
   { user_id: 3, book_id: 104, rating: 3 },
+  { user_id: 3, book_id: 108, rating: 5 },
   { user_id: 4, book_id: 101, rating: 5 },
   { user_id: 4, book_id: 105, rating: 4 },
+  { user_id: 4, book_id: 109, rating: 5 },
   { user_id: 5, book_id: 103, rating: 4 },
   { user_id: 5, book_id: 104, rating: 5 },
+  { user_id: 5, book_id: 110, rating: 3 },
+  { user_id: 6, book_id: 106, rating: 5 },
+  { user_id: 6, book_id: 107, rating: 4 },
+  { user_id: 6, book_id: 111, rating: 5 },
+  { user_id: 7, book_id: 108, rating: 4 },
+  { user_id: 7, book_id: 109, rating: 5 },
+  { user_id: 7, book_id: 112, rating: 4 },
+  { user_id: 8, book_id: 110, rating: 4 },
+  { user_id: 8, book_id: 111, rating: 5 },
+  { user_id: 8, book_id: 102, rating: 4 },
 ];
 
 // Book catalog
@@ -42,6 +56,13 @@ export const books: Book[] = [
   { id: 103, title: "To Kill a Mockingbird", author: "Harper Lee", genre: "Classic Fiction" },
   { id: 104, title: "Pride and Prejudice", author: "Jane Austen", genre: "Romance" },
   { id: 105, title: "The Catcher in the Rye", author: "J.D. Salinger", genre: "Coming-of-age" },
+  { id: 106, title: "The Hobbit", author: "J.R.R. Tolkien", genre: "Fantasy" },
+  { id: 107, title: "Harry Potter and the Sorcerer's Stone", author: "J.K. Rowling", genre: "Fantasy" },
+  { id: 108, title: "Brave New World", author: "Aldous Huxley", genre: "Dystopian" },
+  { id: 109, title: "The Lord of the Rings", author: "J.R.R. Tolkien", genre: "Fantasy" },
+  { id: 110, title: "Jane Eyre", author: "Charlotte Brontë", genre: "Romance" },
+  { id: 111, title: "Dune", author: "Frank Herbert", genre: "Science Fiction" },
+  { id: 112, title: "The Chronicles of Narnia", author: "C.S. Lewis", genre: "Fantasy" },
 ];
 
 // Create user-item matrix

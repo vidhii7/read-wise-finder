@@ -31,7 +31,7 @@ const Index = () => {
               <BookMarked className="h-6 w-6" />
             </div>
             <div>
-              <h1 className="text-2xl font-extrabold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+              <h1 className="text-2xl font-extrabold text-foreground">
                 Book Recommender
               </h1>
               <p className="text-sm text-muted-foreground">

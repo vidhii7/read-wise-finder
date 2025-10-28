@@ -1,12 +1,24 @@
 import { useState } from "react";
-import { books, recommendBooks, getBookById } from "@/lib/recommender";
+import { books, enhancedRecommendBooks, getBookById, UserHistory, ContextFilter } from "@/lib/recommender";
 import { BookCard } from "@/components/BookCard";
 import { RecommendationCard } from "@/components/RecommendationCard";
 import { BookMarked, Sparkles } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+// Simulated user history (user 1 has read these books)
+const userHistory: UserHistory[] = [
+  { user_id: 1, book_id: 106 }, // Read "A Game of Thrones"
+  { user_id: 1, book_id: 112 }, // Read "The Fellowship of the Ring"
+  { user_id: 1, book_id: 110 }, // Read "The Hitchhiker's Guide"
+];
 
 const Index = () => {
   const [selectedBookId, setSelectedBookId] = useState<number | null>(null);
-  const recommendations = selectedBookId ? recommendBooks(selectedBookId, 3) : [];
+  const [contextFilter, setContextFilter] = useState<ContextFilter>('none');
+  
+  const recommendations = selectedBookId 
+    ? enhancedRecommendBooks(1, selectedBookId, userHistory, contextFilter, 5) 
+    : [];
   const selectedBook = selectedBookId ? getBookById(selectedBookId) : null;
 
   return (
@@ -64,9 +76,26 @@ const Index = () => {
                   <h2 className="text-2xl font-bold text-foreground mb-2">
                     Recommendations for "{selectedBook.title}"
                   </h2>
-                  <p className="text-muted-foreground">
-                    Based on collaborative filtering with cosine similarity
+                  <p className="text-muted-foreground mb-4">
+                    Enhanced with sequential series detection and contextual filtering
                   </p>
+                  
+                  <div className="flex items-center gap-3">
+                    <label className="text-sm font-medium text-foreground">Filter by mood:</label>
+                    <Select value={contextFilter} onValueChange={(value) => setContextFilter(value as ContextFilter)}>
+                      <SelectTrigger className="w-[200px]">
+                        <SelectValue placeholder="No filter" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="none">No filter</SelectItem>
+                        <SelectItem value="light_read">Light Read</SelectItem>
+                        <SelectItem value="long_epic">Epic/Long Read</SelectItem>
+                        <SelectItem value="fantasy">Fantasy</SelectItem>
+                        <SelectItem value="sci-fi">Sci-Fi</SelectItem>
+                        <SelectItem value="classic">Classic</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </div>
             </div>
@@ -105,7 +134,7 @@ const Index = () => {
       <footer className="border-t border-border mt-12">
         <div className="container mx-auto px-4 py-6">
           <p className="text-center text-sm text-muted-foreground">
-            Using collaborative filtering with K-Nearest Neighbors & cosine similarity
+            Enhanced collaborative filtering with sequential series detection & mood-based filtering
           </p>
         </div>
       </footer>

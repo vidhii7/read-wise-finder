@@ -1,6 +1,6 @@
 import { Recommendation } from "@/lib/recommender";
 import { Card } from "@/components/ui/card";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Star } from "lucide-react";
 
 interface RecommendationCardProps {
   recommendation: Recommendation;
@@ -12,14 +12,20 @@ export const RecommendationCard = ({ recommendation, index }: RecommendationCard
   
   return (
     <Card 
-      className="overflow-hidden transition-all duration-300 hover:shadow-[var(--shadow-card)] hover:scale-102 animate-in fade-in-50 slide-in-from-bottom-4"
+      className={`overflow-hidden transition-all duration-300 hover:shadow-[var(--shadow-card)] hover:scale-102 animate-in fade-in-50 slide-in-from-bottom-4 ${
+        recommendation.isSequential ? 'ring-2 ring-accent shadow-[var(--shadow-glow)]' : ''
+      }`}
       style={{ animationDelay: `${index * 100}ms` }}
     >
       <div className="p-5 space-y-3">
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 space-y-2">
             <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-accent" />
+              {recommendation.isSequential ? (
+                <Star className="h-4 w-4 text-accent fill-accent" />
+              ) : (
+                <Sparkles className="h-4 w-4 text-accent" />
+              )}
               <h4 className="font-semibold text-card-foreground">
                 {recommendation.title}
               </h4>
@@ -37,7 +43,15 @@ export const RecommendationCard = ({ recommendation, index }: RecommendationCard
           </div>
         </div>
         
-        <div className="flex items-center gap-2 pt-2 border-t border-border">
+        {recommendation.reason && (
+          <div className="pt-2 border-t border-border">
+            <p className="text-xs text-accent font-medium">
+              {recommendation.reason}
+            </p>
+          </div>
+        )}
+        
+        <div className="flex items-center gap-2">
           <span className="px-2 py-0.5 rounded text-xs bg-muted text-muted-foreground">
             {recommendation.genre}
           </span>

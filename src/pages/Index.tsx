@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { books, enhancedRecommendBooks, getBookById, UserHistory, ContextFilter } from "@/lib/recommender";
 import { BookCard } from "@/components/BookCard";
 import { RecommendationCard } from "@/components/RecommendationCard";
-import { BookMarked, Sparkles } from "lucide-react";
+import { BookMarked, Sparkles, LogOut, User } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
 
 // Simulated user history (user 1 has read these books)
 const userHistory: UserHistory[] = [
@@ -13,6 +16,8 @@ const userHistory: UserHistory[] = [
 ];
 
 const Index = () => {
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
   const [selectedBookId, setSelectedBookId] = useState<number | null>(null);
   const [contextFilter, setContextFilter] = useState<ContextFilter>('none');
   
@@ -21,22 +26,48 @@ const Index = () => {
     : [];
   const selectedBook = selectedBookId ? getBookById(selectedBookId) : null;
 
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/auth");
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/30">
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-gradient-to-br from-primary to-primary-glow text-primary-foreground">
-              <BookMarked className="h-6 w-6" />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-gradient-to-br from-primary to-primary-glow text-primary-foreground">
+                <BookMarked className="h-6 w-6" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-extrabold text-foreground">
+                  Book Recommender
+                </h1>
+                <p className="text-sm text-muted-foreground">
+                  Discover your next favorite read
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-extrabold text-foreground">
-                Book Recommender
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Discover your next favorite read
-              </p>
+            
+            <div className="flex items-center gap-3">
+              {user ? (
+                <>
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted">
+                    <User className="h-4 w-4" />
+                    <span className="text-sm font-medium">{user.email}</span>
+                  </div>
+                  <Button variant="outline" size="sm" onClick={handleSignOut}>
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <Button onClick={() => navigate("/auth")}>
+                  Login / Sign Up
+                </Button>
+              )}
             </div>
           </div>
         </div>

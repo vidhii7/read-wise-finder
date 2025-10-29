@@ -1,6 +1,10 @@
 import { Book } from "@/lib/recommender";
 import { Card } from "@/components/ui/card";
 import { BookOpen } from "lucide-react";
+import { ReadingListButton } from "@/components/ReadingListButton";
+import { useState } from "react";
+import { BookRating } from "@/components/BookRating";
+import { Button } from "@/components/ui/button";
 
 interface BookCardProps {
   book: Book;
@@ -9,9 +13,19 @@ interface BookCardProps {
 }
 
 export const BookCard = ({ book, onClick, isSelected = false }: BookCardProps) => {
+  const [showRating, setShowRating] = useState(false);
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Don't trigger onClick if clicking on the rating section
+    if ((e.target as HTMLElement).closest('.rating-section, .reading-list-section')) {
+      return;
+    }
+    onClick();
+  };
+
   return (
     <Card
-      onClick={onClick}
+      onClick={handleCardClick}
       className={`group relative overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-[var(--shadow-elegant)] ${
         isSelected 
           ? "ring-2 ring-primary shadow-[var(--shadow-glow)] scale-105" 
@@ -36,6 +50,27 @@ export const BookCard = ({ book, onClick, isSelected = false }: BookCardProps) =
             {book.author}
           </p>
         </div>
+
+        <div className="reading-list-section space-y-2 pt-2 border-t border-border">
+          <ReadingListButton bookId={book.id} />
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowRating(!showRating);
+            }}
+            className="w-full"
+          >
+            {showRating ? "Hide Rating" : "Rate Book"}
+          </Button>
+        </div>
+
+        {showRating && (
+          <div className="rating-section">
+            <BookRating bookId={book.id} />
+          </div>
+        )}
         
         <div className="pt-2 border-t border-border">
           <p className="text-xs text-muted-foreground">
